@@ -10,7 +10,6 @@ function Books() {
   }, []);
 
   const fetchBooks = () => {
-    console.log(localStorage, "=======")
     http
       .get("/books")
       .then((res) => {
@@ -50,15 +49,25 @@ function Books() {
         <tbody>
           {books.map((book) => (
             <tr key={book.book_id}>
-              <td>{book.title}</td>
+              <td>
+                <Link to={`/books/${book.book_id}/show`}>{book.title}</Link>
+              </td>
               <td>{book.author}</td>
               <td>
-                <Link to={`/books/${book.book_id}/edit`} className="btn btn-primary">
+                <Link
+                  to={`/books/${book.book_id}/edit`}
+                  className="btn btn-primary"
+                >
                   <span className="text-justify text-uppercase">Edit</span>
                 </Link>
               </td>
               <td>
-                <button className="btn btn-danger" onClick={() => handleDelete(book)}>Delete</button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleDelete(book)}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

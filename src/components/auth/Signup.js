@@ -23,6 +23,8 @@ function Signup(props) {
     http
       .post("/auth/signup", input)
       .then((res) => {
+        console.log(res.data)
+        localStorage.setItem('token', res.data.token)
         history.push("/books");
       })
       .catch((err) => console.log(err));

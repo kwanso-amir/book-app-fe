@@ -20,7 +20,7 @@ function Login() {
     http
       .post("/auth", input)
       .then((res) => {
-        console.log(res.headers, "HEADER")
+        localStorage.setItem('token', res.data.token)
         history.push("/books");
       })
       .catch((err) => console.log(err));
