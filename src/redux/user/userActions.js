@@ -175,11 +175,11 @@ export const currentUserFailure = (error) => {
   };
 };
 
-export const currentUser = () => {
+export const setCurrentUser = () => {
   return (dispatch) => {
     dispatch(currentUserRequest);
     http
-      .get(`/me`)
+      .get(`users/me`)
       .then((res) => {
         dispatch(currentUserSuccess(res.data));
       })

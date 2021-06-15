@@ -1,32 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import http from "../../common/http";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBooks, deleteBook } from "../../redux";
 
 function Books() {
-  const [books, setBooks] = useState([]);
+  const books = useSelector((state) => state.book.books);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchBooks();
+    dispatch(fetchBooks());
   }, []);
 
-  const fetchBooks = () => {
-    http
-      .get("/books")
-      .then((res) => {
-        setBooks(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const handleDelete = (book) => {
-    http
-      .delete(`/books/${book.id}`)
-      .then((res) => {
-        fetchBooks();
-      })
-      .catch((err) => console.log(err));
+    dispatch(deleteBook(book.book_id));
   };
 
   return (

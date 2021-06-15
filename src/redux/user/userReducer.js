@@ -11,6 +11,9 @@ import {
   CREATE_USER_FAILURE,
   CREATE_USER_REQUEST,
   CREATE_USER_SUCCESS,
+  CURRENT_USER_FAILURE,
+  CURRENT_USER_REQUEST,
+  CURRENT_USER_SUCCESS,
 } from "./userTypes";
 
 const initialState = {
@@ -93,13 +96,34 @@ const userReducer = (state = initialState, action) => {
       };
 
     case UPDATE_USER_SUCCESS:
-    return {
+      return {
         ...state,
         loading: false,
         error: "",
       };
 
     case UPDATE_USER_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    case CURRENT_USER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case CURRENT_USER_SUCCESS:
+      return {
+        ...state,
+        currentUser: action.payload,
+        loading: false,
+        error: "",
+      };
+
+    case CURRENT_USER_FAILURE:
       return {
         ...state,
         loading: false,

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import BookForm from "./BookForm";
-import http from "../../common/http";
 import { useHistory, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updateBook } from "../../redux";
+import http from "../../common/http";
 
 function EditBook() {
   const history = useHistory();
   const { id } = useParams();
+  const dispatch = useDispatch();
   const [book, setBook] = useState(null);
-  const [load, setLoad] = useState(true);
 
   useEffect(() => {
     fetchBook();
@@ -23,15 +25,17 @@ function EditBook() {
   };
 
   const handleSubmit = (inputs) => {
-    http
-      .put(`/books/${book.book_id}`, inputs)
-      .then((res) => {
-        history.push("/books");
-      })
-      .catch((err) => console.log(err));
-  }
+    dispatch(updateBook({ id: id, data: inputs }));
 
-  let bookForm = book !== null ? <BookForm book={book} newBook={false} onSubmit={handleSubmit} /> : "";
+    history.push("/books");
+  };
+
+  let bookForm =
+    book !== null ? (
+      <BookForm book={book} newBook={false} onSubmit={handleSubmit} />
+    ) : (
+      ""
+    );
 
   return (
     <div>

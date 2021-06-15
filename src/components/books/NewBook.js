@@ -1,18 +1,17 @@
 import React from "react";
 import BookForm from "./BookForm";
-import http from "../../common/http";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { createBook } from "../../redux";
 
 function NewBook() {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const handleSubmit = (inputs) => {
-    http
-      .post(`/books`, inputs)
-      .then((res) => {
-        history.push("/books");
-      })
-      .catch((err) => console.log(err));
+    dispatch(createBook(inputs));
+
+    history.push("/books");
   };
 
   let bookForm = <BookForm newBook={true} onSubmit={handleSubmit} />;

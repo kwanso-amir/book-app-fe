@@ -1,9 +1,5 @@
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  useHistory,
-} from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Switch, useHistory } from "react-router-dom";
 import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
 import PrivateRoutes from "../routes/PrivateRoutes";
 import Users from "./users/Users";
@@ -16,9 +12,17 @@ import ShowBook from "./books/ShowBook";
 import Login from "./auth/Login";
 import Signup from "./auth/Signup";
 import { logout } from "../helper/Helpers";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentUser } from "../redux";
 
-function BootstrapNavbar(props) {
+function BootstrapNavbar() {
   const history = useHistory();
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setCurrentUser());
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -66,6 +70,13 @@ function BootstrapNavbar(props) {
                     >
                       Log in
                     </Button>
+                  )}
+                  {currentUser !== null ? (
+                    <Button className="ml-4" variant="outline-success">
+                      {currentUser.first_name} {currentUser.last_name}
+                    </Button>
+                  ) : (
+                    ""
                   )}
                 </Form>
               </Navbar.Collapse>
