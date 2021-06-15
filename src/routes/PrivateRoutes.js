@@ -11,17 +11,14 @@ function PrivateRoutes({ component: Component, ...rest }) {
       {...rest}
       render={(props) => {
         if (localStorage.getItem("token")) {
-          console.log("s");
           if (Component.name === "Login" || Component.name === "Signup") {
             return <Redirect to="/books" />;
           }
           return <Component {...props} />;
         } else {
           if (Component.name === "Signup") {
-            console.log("SIGNUP");
             return <Signup {...props} />;
           } else {
-            console.log("LOGIN");
             return <Login {...props} />;
           }
         }

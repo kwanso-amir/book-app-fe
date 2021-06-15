@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Switch,
   useHistory,
-  withRouter,
 } from "react-router-dom";
 import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
 import PrivateRoutes from "../routes/PrivateRoutes";
@@ -23,7 +22,11 @@ function BootstrapNavbar(props) {
 
   const handleLogout = () => {
     logout();
-    
+
+    history.push("/login");
+  };
+
+  const handleLogin = () => {
     history.push("/login");
   };
 
@@ -47,13 +50,23 @@ function BootstrapNavbar(props) {
                     className="mr-sm-2"
                   />
                   <Button variant="outline-success">Search</Button>
-                  <Button
-                    className="ml-4"
-                    variant="outline-danger"
-                    onClick={handleLogout}
-                  >
-                    Log out
-                  </Button>
+                  {localStorage.getItem("token") ? (
+                    <Button
+                      className="ml-4"
+                      variant="outline-danger"
+                      onClick={handleLogout}
+                    >
+                      Log out
+                    </Button>
+                  ) : (
+                    <Button
+                      className="ml-4"
+                      variant="outline-primary"
+                      onClick={handleLogin}
+                    >
+                      Log in
+                    </Button>
+                  )}
                 </Form>
               </Navbar.Collapse>
             </Navbar>
@@ -87,7 +100,7 @@ function BootstrapNavbar(props) {
               ></PrivateRoutes>
               <PrivateRoutes path="/login" component={Login}></PrivateRoutes>
               <PrivateRoutes path="/signup" component={Signup}></PrivateRoutes>
-             </Switch>
+            </Switch>
           </Router>
         </div>
       </div>

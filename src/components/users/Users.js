@@ -1,32 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import http from "../../common/http";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUsers, deleteUser } from "../../redux";
 
 function Users() {
-  const [users, setUsers] = useState([]);
+  const users = useSelector((state) => state.user.users);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchUsers();
+    dispatch(fetchUsers());
   }, []);
 
-  const fetchUsers = () => {
-    http
-      .get("/users")
-      .then((res) => {
-        setUsers(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const handleDelete = (user) => {
-    http
-      .delete(`/users/${user.id}`)
-      .then((res) => {
-        fetchUsers();
-      })
-      .catch((err) => console.log(err));
+    dispatch(deleteUser(user.id));
   };
 
   return (
@@ -57,7 +43,12 @@ function Users() {
                 </Link>
               </td>
               <td>
-                <button className="btn btn-danger" onClick={() => handleDelete(user)}>Delete</button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleDelete(user)}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

@@ -1,5 +1,3 @@
-import http from "../common/http";
-
 export const currentUser = function () {
   return true;
 };
@@ -12,5 +10,5 @@ export const isLoggedIn = function () {
 };
 
 export const logout = function () {
-    localStorage.clear()
+  localStorage.clear()
 };
