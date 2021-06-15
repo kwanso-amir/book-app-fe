@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   useHistory,
+  withRouter,
 } from "react-router-dom";
 import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
 import PrivateRoutes from "../routes/PrivateRoutes";
@@ -17,11 +18,12 @@ import Login from "./auth/Login";
 import Signup from "./auth/Signup";
 import { logout } from "../helper/Helpers";
 
-function BootstrapNavbar() {
+function BootstrapNavbar(props) {
   const history = useHistory();
 
   const handleLogout = () => {
     logout();
+    
     history.push("/login");
   };
 
@@ -31,7 +33,7 @@ function BootstrapNavbar() {
         <div className="col-md-12">
           <Router>
             <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
-              <Navbar.Brand href="#home">React Bootstrap Navbar</Navbar.Brand>
+              <Navbar.Brand href="#home">Book App</Navbar.Brand>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
@@ -57,40 +59,35 @@ function BootstrapNavbar() {
             </Navbar>
             <br />
             <Switch>
-              {/* <Route exact path="/">
-                  <Home />
-                </Route> */}
-              <PrivateRoutes exact path="/users">
-                <Users />
-              </PrivateRoutes>
-              <PrivateRoutes path="/users/new">
-                <NewUser />
-              </PrivateRoutes>
-              <PrivateRoutes path="/users/:id/edit">
-                <EditUser />
-              </PrivateRoutes>
-              <PrivateRoutes exact path="/books">
-                <Books />
-              </PrivateRoutes>
-              <PrivateRoutes path="/books/new">
-                <NewBook />
-              </PrivateRoutes>
-              <PrivateRoutes path="/books/:id/edit">
-                <EditBook />
-              </PrivateRoutes>
-              <PrivateRoutes path="/books/:id/show">
-                <ShowBook />
-              </PrivateRoutes>
-              <PrivateRoutes path="/login">
-                <Login />
-              </PrivateRoutes>
-              <PrivateRoutes path="/signup">
-                <Signup />
-              </PrivateRoutes>
-              {/*<Route path="/contact-us">
-                  <ContactUs />
-                </Route> */}
-            </Switch>
+              <PrivateRoutes exact path="/users" component={Users} />
+              <PrivateRoutes
+                path="/users/new"
+                component={NewUser}
+              ></PrivateRoutes>
+              <PrivateRoutes
+                path="/users/:id/edit"
+                component={EditUser}
+              ></PrivateRoutes>
+              <PrivateRoutes
+                exact
+                path="/books"
+                component={Books}
+              ></PrivateRoutes>
+              <PrivateRoutes
+                path="/books/new"
+                component={NewBook}
+              ></PrivateRoutes>
+              <PrivateRoutes
+                path="/books/:id/edit"
+                component={EditBook}
+              ></PrivateRoutes>
+              <PrivateRoutes
+                path="/books/:id/show"
+                component={ShowBook}
+              ></PrivateRoutes>
+              <PrivateRoutes path="/login" component={Login}></PrivateRoutes>
+              <PrivateRoutes path="/signup" component={Signup}></PrivateRoutes>
+             </Switch>
           </Router>
         </div>
       </div>
