@@ -14,8 +14,9 @@ import Signup from "./auth/Signup";
 import { logout } from "../helper/Helpers";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentUser } from "../redux";
+import TestComment from "./comments/TestComment";
 
-function BootstrapNavbar() {
+const BootstrapNavbar = () =>  {
   const history = useHistory();
   const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
@@ -26,8 +27,7 @@ function BootstrapNavbar() {
 
   const handleLogout = () => {
     logout();
-
-    history.push("/login");
+    window.location = '/login'
   };
 
   const handleLogin = () => {
@@ -46,6 +46,7 @@ function BootstrapNavbar() {
                 <Nav className="mr-auto">
                   <Nav.Link href="/users">Users</Nav.Link>
                   <Nav.Link href="/books">Books</Nav.Link>
+                  <Nav.Link href="/comment-sample">Comment Sample</Nav.Link>
                 </Nav>
                 <Form inline>
                   <FormControl
@@ -66,7 +67,8 @@ function BootstrapNavbar() {
                     <Button
                       className="ml-4"
                       variant="outline-primary"
-                      onClick={handleLogin}
+                      onClick={() => window.location = '/login'}
+
                     >
                       Log in
                     </Button>
@@ -104,6 +106,10 @@ function BootstrapNavbar() {
               <PrivateRoutes
                 path="/books/:id/edit"
                 component={EditBook}
+              ></PrivateRoutes>
+              <PrivateRoutes
+                path="/comment-sample"
+                component={TestComment}
               ></PrivateRoutes>
               <PrivateRoutes
                 path="/books/:id/show"

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import http from "../../common/http";
+import { useHistory } from "react-router-dom";
 
 function BookForm(props) {
   const history = useHistory();

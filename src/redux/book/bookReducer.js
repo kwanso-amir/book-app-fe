@@ -50,7 +50,7 @@ const bookReducer = (state = initialState, action) => {
     case DELETE_BOOK_SUCCESS:
       return {
         loading: false,
-        books: state.books.filter((book) => book.book_id !== action.payload),
+        books: state.books.filter((book) => book.id !== action.payload),
         error: "",
       };
 

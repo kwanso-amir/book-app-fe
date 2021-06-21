@@ -116,6 +116,7 @@ const userReducer = (state = initialState, action) => {
       };
 
     case CURRENT_USER_SUCCESS:
+      console.log(action.payload, "CURRENT USER")
       return {
         ...state,
         currentUser: action.payload,

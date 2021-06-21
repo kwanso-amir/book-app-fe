@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const currentUser = function () {
   return true;
 };
@@ -10,5 +12,9 @@ export const isLoggedIn = function () {
 };
 
 export const logout = function () {
-  localStorage.clear()
+  localStorage.clear();
+};
+
+export const timeFormat = function (time) {
+  return moment(time).format("DD-MM-YY hh:mm");
 };

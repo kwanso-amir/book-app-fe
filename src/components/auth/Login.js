@@ -20,8 +20,8 @@ function Login() {
     http
       .post("/auth", input)
       .then((res) => {
-        localStorage.setItem('token', res.data.token)
-        history.push("/books");
+        localStorage.setItem("token", res.data.token);
+        window.location = "/books";
       })
       .catch((err) => console.log(err));
   };

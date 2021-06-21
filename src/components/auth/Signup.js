@@ -25,7 +25,7 @@ function Signup(props) {
       .then((res) => {
         console.log(res.data)
         localStorage.setItem('token', res.data.token)
-        history.push("/books");
+        window.location = "/books";
       })
       .catch((err) => console.log(err));
   };

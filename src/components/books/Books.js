@@ -8,11 +8,17 @@ function Books() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchBooks());
+    fetchResources();
   }, []);
 
-  const handleDelete = (book) => {
-    dispatch(deleteBook(book.book_id));
+  const fetchResources = async () => {
+    await dispatch(fetchBooks());
+  };
+
+  const userName = (book) => {
+    if (book.user !== undefined) {
+      return `${book.user.first_name} ${book.user.last_name}`;
+    } else return "No name";
   };
 
   return (
@@ -28,29 +34,30 @@ function Books() {
           <tr>
             <th scope="col">Title</th>
             <th scope="col">Author</th>
+            <th scope="col">Added by</th>
+            <th scope="col">Data</th>
             <th scope="col">Edit</th>
             <th scope="col">Delete</th>
           </tr>
         </thead>
         <tbody>
           {books.map((book) => (
-            <tr key={book.book_id}>
+            <tr key={book.id}>
               <td>
-                <Link to={`/books/${book.book_id}/show`}>{book.title}</Link>
+                <Link to={`/books/${book.id}/show`}>{book.title}</Link>
               </td>
               <td>{book.author}</td>
+              <td>{userName(book)}</td>
+              <td>{Date(book.createdAt)}</td>
               <td>
-                <Link
-                  to={`/books/${book.book_id}/edit`}
-                  className="btn btn-primary"
-                >
+                <Link to={`/books/${book.id}/edit`} className="btn btn-primary">
                   <span className="text-justify text-uppercase">Edit</span>
                 </Link>
               </td>
               <td>
                 <button
                   className="btn btn-danger"
-                  onClick={() => handleDelete(book)}
+                  onClick={() => dispatch(deleteBook(book.id))}
                 >
                   Delete
                 </button>

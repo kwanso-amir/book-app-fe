@@ -146,7 +146,6 @@ export const updateUser = (payload) => {
     http
       .put(`/users/${payload.id}`, payload.data)
       .then((res) => {
-        console.log("res ====", res)
         dispatch(updateUserSuccess(res.data));
       })
       .catch((err) => {
@@ -161,10 +160,10 @@ export const currentUserRequest = () => {
   };
 };
 
-export const currentUserSuccess = (id) => {
+export const currentUserSuccess = (user) => {
   return {
     type: CURRENT_USER_SUCCESS,
-    payload: id,
+    payload: user,
   };
 };
 
@@ -179,7 +178,7 @@ export const setCurrentUser = () => {
   return (dispatch) => {
     dispatch(currentUserRequest);
     http
-      .get(`users/me`)
+      .get(`/users/me`)
       .then((res) => {
         dispatch(currentUserSuccess(res.data));
       })

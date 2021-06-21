@@ -16,31 +16,27 @@ function EditBook() {
   }, []);
 
   const fetchBook = async () => {
-    await http
-      .get(`/books/${id}`)
-      .then((res) => {
-        setBook(res.data);
-      })
-      .catch((err) => console.log(err));
+    try {
+      const res = await http.get(`/books/${id}`);
+      setBook(res.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleSubmit = (inputs) => {
-    dispatch(updateBook({ id: id, data: inputs }));
+  const handleSubmit = (data) => {
+    dispatch(updateBook({ id, data }));
 
     history.push("/books");
   };
 
-  let bookForm =
-    book !== null ? (
-      <BookForm book={book} newBook={false} onSubmit={handleSubmit} />
-    ) : (
-      ""
-    );
-
+  const bookForm = book !== null && <BookForm book={book} newBook={false} onSubmit={handleSubmit} />
+// tO-DO ADD LOADING COMP
   return (
+    
     <div>
       <h1>Edit Book</h1>
-      {bookForm}
+      {bookForm} 
     </div>
   );
 }
