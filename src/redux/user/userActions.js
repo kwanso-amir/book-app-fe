@@ -39,16 +39,15 @@ export const fetchUsersFailure = (error) => {
 };
 
 export const fetchUsers = () => {
-  return (dispatch) => {
-    dispatch(fetchUsersRequest);
-    http
-      .get(`/users`)
-      .then((res) => {
-        dispatch(fetchUsersSuccess(res.data));
-      })
-      .catch((err) => {
-        dispatch(fetchUsersFailure(err));
-      });
+  return async (dispatch) => {
+    try {
+      dispatch(fetchUsersRequest);
+      const res = await http.get(`/users`);
+
+      dispatch(fetchUsersSuccess(res.data));
+    } catch (err) {
+      dispatch(fetchUsersFailure(err));
+    }
   };
 };
 
@@ -73,16 +72,14 @@ export const deleteUserFailure = (error) => {
 };
 
 export const deleteUser = (id) => {
-  return (dispatch) => {
-    dispatch(deleteUserRequest);
-    http
-      .delete(`/users/${id}`)
-      .then((res) => {
-        dispatch(deleteUserSuccess(id));
-      })
-      .catch((err) => {
-        dispatch(deleteUserFailure(err));
-      });
+  return async (dispatch) => {
+    try {
+      dispatch(deleteUserRequest);
+      const res = await http.delete(`/users/${id}`);
+      dispatch(deleteUserSuccess(id));
+    } catch (err) {
+      dispatch(deleteUserFailure(err));
+    }
   };
 };
 
@@ -107,16 +104,15 @@ export const createUserFailure = (error) => {
 };
 
 export const createUser = (payload) => {
-  return (dispatch) => {
-    dispatch(createUserRequest);
-    http
-      .post(`/users`, payload)
-      .then((res) => {
-        dispatch(createUserSuccess(res.data));
-      })
-      .catch((err) => {
-        dispatch(createUserFailure(err));
-      });
+  return async (dispatch) => {
+    try {
+      dispatch(createUserRequest);
+      const res = await http.post(`/users`, payload);
+
+      dispatch(createUserSuccess(res.data));
+    } catch (err) {
+      dispatch(createUserFailure(err));
+    }
   };
 };
 
@@ -141,16 +137,15 @@ export const updateUserFailure = (error) => {
 };
 
 export const updateUser = (payload) => {
-  return (dispatch) => {
-    dispatch(updateUserRequest);
-    http
-      .put(`/users/${payload.id}`, payload.data)
-      .then((res) => {
-        dispatch(updateUserSuccess(res.data));
-      })
-      .catch((err) => {
-        dispatch(updateUserFailure(err));
-      });
+  return async (dispatch) => {
+    try {
+      dispatch(updateUserRequest);
+      const res = await http.put(`/users/${payload.id}`, payload.data);
+
+      dispatch(updateUserSuccess(res.data));
+    } catch (err) {
+      dispatch(updateUserFailure(err));
+    }
   };
 };
 
@@ -175,15 +170,14 @@ export const currentUserFailure = (error) => {
 };
 
 export const setCurrentUser = () => {
-  return (dispatch) => {
-    dispatch(currentUserRequest);
-    http
-      .get(`/users/me`)
-      .then((res) => {
-        dispatch(currentUserSuccess(res.data));
-      })
-      .catch((err) => {
-        dispatch(currentUserFailure(err));
-      });
+  return async (dispatch) => {
+    try {
+      dispatch(currentUserRequest);
+      const res = await http.get(`/users/me`);
+
+      dispatch(currentUserSuccess(res.data));
+    } catch (err) {
+      dispatch(currentUserFailure(err));
+    }
   };
 };

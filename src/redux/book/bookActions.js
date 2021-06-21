@@ -36,16 +36,15 @@ export const fetchBooksFailure = (error) => {
 };
 
 export const fetchBooks = () => {
-  return (dispatch) => {
-    dispatch(fetchBooksRequest);
-    http
-      .get(`/books`)
-      .then((res) => {
-        dispatch(fetchBooksSuccess(res.data));
-      })
-      .catch((err) => {
-        dispatch(fetchBooksFailure(err));
-      });
+  return async (dispatch) => {
+    try {
+      dispatch(fetchBooksRequest);
+      const res = await http.get(`/books`);
+
+      dispatch(fetchBooksSuccess(res.data));
+    } catch (err) {
+      dispatch(fetchBooksFailure(err));
+    }
   };
 };
 
@@ -70,16 +69,15 @@ export const deleteBookFailure = (error) => {
 };
 
 export const deleteBook = (id) => {
-  return (dispatch) => {
-    dispatch(deleteBookRequest);
-    http
-      .delete(`/books/${id}`)
-      .then((res) => {
-        dispatch(deleteBookSuccess(id));
-      })
-      .catch((err) => {
-        dispatch(deleteBookFailure(err));
-      });
+  return async (dispatch) => {
+    try {
+      dispatch(deleteBookRequest);
+      const res = await http.delete(`/books/${id}`);
+
+      dispatch(deleteBookSuccess(id));
+    } catch (error) {
+      dispatch(deleteBookFailure(error));
+    }
   };
 };
 
@@ -104,16 +102,15 @@ export const createBookFailure = (error) => {
 };
 
 export const createBook = (payload) => {
-  return (dispatch) => {
-    dispatch(createBookRequest);
-    http
-      .post(`/books`, payload)
-      .then((res) => {
-        dispatch(createBookSuccess(res.data));
-      })
-      .catch((err) => {
-        dispatch(createBookFailure(err));
-      });
+  return async (dispatch) => {
+    try {
+      dispatch(createBookRequest);
+      const res = await http.post(`/books`, payload);
+
+      dispatch(createBookSuccess(res.data));
+    } catch (error) {
+      dispatch(createBookFailure(error));
+    }
   };
 };
 
@@ -138,15 +135,14 @@ export const updateBookFailure = (error) => {
 };
 
 export const updateBook = (payload) => {
-  return (dispatch) => {
-    dispatch(updateBookRequest);
-    http
-      .put(`/books/${payload.id}`, payload.data)
-      .then((res) => {
-        dispatch(updateBookSuccess(res.data));
-      })
-      .catch((err) => {
-        dispatch(updateBookFailure(err));
-      });
+  return async (dispatch) => {
+    try {
+      dispatch(updateBookRequest);
+      const res = await http.put(`/books/${payload.id}`, payload.data);
+
+      dispatch(updateBookSuccess(res.data));
+    } catch (error) {
+      dispatch(updateBookFailure(error));
+    }
   };
 };
