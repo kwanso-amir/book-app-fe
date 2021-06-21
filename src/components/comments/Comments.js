@@ -11,7 +11,7 @@ function Comments({ comments, onCommentPosted }) {
         </Header>
 
         {comments.map((comment) => (
-          <div className="mt-2" key={comment.id}>
+          <div className="mt-2 mb-5" key={comment.id}>
             <CommentContainer
               comment={comment}
               onReplyPosted={() => onCommentPosted()}

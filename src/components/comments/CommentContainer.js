@@ -1,18 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import { Button, Comment, Form, Header } from "semantic-ui-react";
 import { timeFormat } from "../../helper/Helpers";
 import http from "../../common/http";
 import { useSelector } from "react-redux";
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SET_SHOW":
+      return { ...state, show: !state.show };
+
+    case "SET_REPLIES":
+      return { ...state, loading: false, commentReplies: [...action.payload] };
+
+    case "SET_REPLY":
+      return { ...state, replyText: action.payload };
+
+    default:
+      return state;
+  }
+};
+
 function CommentContainer({ comment, onReplyPosted }) {
   const currentUser = useSelector((state) => state.user.currentUser);
+  const localState = {
+    commentReplies: [],
+    show: false,
+    replyText: "",
+    loading: true,
+  };
 
-  const [show, setShow] = useState(false);
-  const [replies, setReplies] = useState([]);
-  const [reply, setReply] = useState("");
+  const [state, localDispatch] = useReducer(reducer, localState);
 
   useEffect(() => {
-    setReplies(comment.replies);
+    localDispatch({ type: "SET_REPLIES", payload: comment.replies });
+    console.log(state);
   }, []);
 
   const userName = (user) => {
@@ -22,20 +43,25 @@ function CommentContainer({ comment, onReplyPosted }) {
   const handleReplies = async () => {
     try {
       const payload = {
-        body: reply,
+        body: state.replyText,
         user_id: currentUser.id,
-        comment_id: comment.id
-      }
+        comment_id: comment.id,
+      };
       const res = http.post("/replies", payload);
-      
-      setReply("");
+
+      localDispatch({ type: "SET_REPLY", payload: "" });
       onReplyPosted();
     } catch (error) {
       console.log(error);
     }
   };
 
-  return (
+  const { show, replyText, loading, commentReplies } = state;
+  const renderComments = loading ? (
+    <div className="spinner-border mt-5" role="status">
+      <span className="visually-hidden"></span>
+    </div>
+  ) : (
     <div>
       <Comment>
         <Comment.Avatar src="https://react.semantic-ui.com/images/avatar/small/matt.jpg" />
@@ -48,13 +74,14 @@ function CommentContainer({ comment, onReplyPosted }) {
           <Comment.Actions>
             <Comment.Action
               className="btn btn-primary"
-              onClick={() => setShow(!show)}
+              onClick={() => localDispatch({ type: "SET_SHOW" })}
             >
               {show ? "Hide" : "Show"} Replies
             </Comment.Action>
           </Comment.Actions>
         </Comment.Content>
       </Comment>
+
       <div>
         {show && (
           <Form reply>
@@ -63,15 +90,23 @@ function CommentContainer({ comment, onReplyPosted }) {
                 Replies
               </Header>
             </Comment.Group>
-            {replies.length > 0 &&
-              replies.map((reply) => (
-                <div key={reply.id}>
+            {commentReplies.length > 0 &&
+              commentReplies.map((reply) => (
+                <div key={reply.id} className="mt-4">
+                  <h5>
+                    <span className="text-uppercase">
+                      {userName(reply.user)}
+                    </span>
+                  </h5>
                   <p>{reply.body}</p>
+                  <span className="">{timeFormat(comment.createdAt)}</span>
                 </div>
               ))}
             <Form.TextArea
-              value={reply}
-              onChange={(e) => setReply(e.target.value)}
+              value={replyText}
+              onChange={(e) =>
+                localDispatch({ type: "SET_REPLY", payload: e.target.value })
+              }
             />
             <Button
               content="Add Reply"
@@ -86,6 +121,8 @@ function CommentContainer({ comment, onReplyPosted }) {
       </div>
     </div>
   );
+
+  return renderComments;
 }
 
 export default CommentContainer;

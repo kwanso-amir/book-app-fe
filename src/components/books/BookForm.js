@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-function BookForm(props) {
+function BookForm({book, newBook, onSubmit}) {
   const history = useHistory();
 
   const [input, setInput] = useState({
@@ -11,12 +11,11 @@ function BookForm(props) {
   });
 
   useEffect(() => {
-    if (!props.newBook) {
+    if (!newBook) {
       setInput({
-        ...input,
-        title: props.book.title,
-        author: props.book.author,
-        image: props.book.image,
+        title: book.title,
+        author: book.author,
+        image: book.image,
       });
     }
   }, []);
@@ -27,7 +26,7 @@ function BookForm(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.onSubmit(input);
+    onSubmit(input);
   };
 
   return (

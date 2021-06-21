@@ -1,28 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import { useHistory, useParams } from "react-router";
 import http from "../../common/http";
 import Comments from "../comments/Comments";
 import CommentInput from "../comments/CommentInput";
-import Books from "./Books";
 
-function ShowBook() {
-  const history = useHistory();
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SET_BOOK":
+      return { ...state, book: action.payload };
+
+    case "SET_COMMENTS":
+      return { ...state, comments: action.payload };
+    default:
+      return state;
+  }
+};
+
+const ShowBook = () => {
   const { id } = useParams();
-  const [book, setBook] = useState({});
-  const [comments, setComments] = useState([]);
+  const localState = {
+    book: {},
+    comments: [],
+  };
+  const [state, localDispatch] = useReducer(reducer, localState);
 
   useEffect(() => {
     fetchBook();
   }, []);
 
-  // TODO: Remove .then use try catch
-
   const fetchBook = async () => {
     try {
       const response = await http.get(`/books/${id}`);
 
-      setBook(response.data);
-      setComments(response.data.comments);
+      localDispatch({ type: "SET_BOOK", payload: response.data });
+      localDispatch({ type: "SET_COMMENTS", payload: response.data.comments });
     } catch (error) {
       console.log(error);
     }
@@ -31,6 +42,7 @@ function ShowBook() {
   const updateComments = () => {
     fetchBook();
   };
+  const { book, comments } = state;
 
   let bookContainer =
     book !== null ? (
@@ -43,10 +55,12 @@ function ShowBook() {
         <CommentInput bookId={id} onCommentPosted={updateComments} />
       </div>
     ) : (
-      "Loading ..."
+      <div class="spinner-border mt-5" role="status">
+        <span class="visually-hidden"></span>
+      </div>
     );
 
   return <div>{bookContainer}</div>;
-}
+};
 
 export default ShowBook;

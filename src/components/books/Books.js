@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchBooks, deleteBook } from "../../redux";
 
 function Books() {
-  const books = useSelector((state) => state.book.books);
+  const { books, loading } = useSelector((state) => state.book);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -21,7 +21,11 @@ function Books() {
     } else return "No name";
   };
 
-  return (
+  const renderBooks = loading ? (
+    <div className="spinner-border mt-5" role="status">
+      <span className="visually-hidden"></span>
+    </div>
+  ) : (
     <div className="container">
       <div className="justify-content-around row m-3">
         <h1>Books</h1>
@@ -68,6 +72,8 @@ function Books() {
       </table>
     </div>
   );
+
+  return renderBooks;
 }
 
 export default Books;

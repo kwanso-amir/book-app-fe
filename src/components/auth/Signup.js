@@ -23,7 +23,6 @@ function Signup(props) {
     http
       .post("/auth/signup", input)
       .then((res) => {
-        console.log(res.data)
         localStorage.setItem('token', res.data.token)
         window.location = "/books";
       })

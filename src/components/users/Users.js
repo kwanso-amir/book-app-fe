@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers, deleteUser } from "../../redux";
 
 function Users() {
-  const users = useSelector((state) => state.user.users);
+  const { users, loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,7 +15,11 @@ function Users() {
     dispatch(deleteUser(user.id));
   };
 
-  return (
+  const renderUsers = loading ? (
+    <div className="spinner-border mt-5" role="status">
+      <span className="visually-hidden"></span>
+    </div>
+  ) : (
     <div className="container">
       <div className="justify-content-around row m-3">
         <h1>Users</h1>
@@ -56,6 +60,8 @@ function Users() {
       </table>
     </div>
   );
+
+  return renderUsers;
 }
 
 export default Users;

@@ -14,7 +14,6 @@ import Signup from "./auth/Signup";
 import { logout } from "../helper/Helpers";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentUser } from "../redux";
-import TestComment from "./comments/TestComment";
 
 const BootstrapNavbar = () =>  {
   const history = useHistory();
@@ -46,7 +45,6 @@ const BootstrapNavbar = () =>  {
                 <Nav className="mr-auto">
                   <Nav.Link href="/users">Users</Nav.Link>
                   <Nav.Link href="/books">Books</Nav.Link>
-                  <Nav.Link href="/comment-sample">Comment Sample</Nav.Link>
                 </Nav>
                 <Form inline>
                   <FormControl
@@ -106,10 +104,6 @@ const BootstrapNavbar = () =>  {
               <PrivateRoutes
                 path="/books/:id/edit"
                 component={EditBook}
-              ></PrivateRoutes>
-              <PrivateRoutes
-                path="/comment-sample"
-                component={TestComment}
               ></PrivateRoutes>
               <PrivateRoutes
                 path="/books/:id/show"
